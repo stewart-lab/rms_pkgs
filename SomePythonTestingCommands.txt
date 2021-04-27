@@ -1,0 +1,2 @@
+python processLincsFilesAndRunKmSKim.py out/ /w5home/ron/LexiconsForSKiM/tripleNegativeBreastCancer.txt /w5home/ron/LexiconsForSKiM/test/ ./LincsIn/lincsMDA_MB231_all.tsv -kf 1e-2
+python -m pdb  processLincsFilesAndRunKmSKim.py out/ /w5home/ron/LexiconsForSKiM/tripleNegativeBreastCancer.txt /w5home/ron/LexiconsForSKiM/test_superShort/ ./LincsIn/justNIlotinib.txt -kf 1e-3
