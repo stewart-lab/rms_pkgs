@@ -98,9 +98,9 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
     new_args["start_time_secs"] = start_time_secs
     new_args["pretty_start_time"] = pretty_start_time
     assert(the_out_dir != "")
-    if ("rerun_out_directory" in new_args):
+    if ("rerun_out_directory" in new_args and new_args["rerun_out_directory"] != None):
         the_out_dir = new_args["rerun_out_directory"]
-        print("rerundir:", new_args["rerun_out_directory"])
+        print("rerundir in rmscmdline:", new_args["rerun_out_directory"])
     else:
         make_dir(the_out_dir)
         the_out_dir = os.path.join(the_out_dir, pretty_start_time)
