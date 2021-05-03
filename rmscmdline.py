@@ -81,15 +81,14 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
                 	tmp_name = arg_defs["alt_name"].lstrip("-")
                 new_args[tmp_name] = args.__dict__[tmp_name]  # if it is a directory or file,  new_args[tmp_name] will be overlain below
                 if (arg_defs["is_dir"] == "1" or arg_defs["is_file"] == "1"):
-                	new_args[tmp_name] = os.path.abspath(args.__dict__[tmp_name]) 	   
+                    if (args.__dict__[tmp_name]): #rms. I don't like this.  I think I need a different way to check that the flagged arg is NOT filled in, versus filled in incorrecdtly
+                	    new_args[tmp_name] = os.path.abspath(args.__dict__[tmp_name]) 	   
                 if (arg_defs["is_out_dir"]  == "1"):
-                	make_dir(new_args[tmp_name])
-                	new_args[tmp_name] = os.path.join(new_args[tmp_name], pretty_start_time)
-                	make_dir(new_args[tmp_name])
                 	the_out_dir = new_args[tmp_name]
                 if (arg_defs["check_dir"] == "1"):
-                	dirs_to_check.append(new_args[tmp_name])
-                if (arg_defs["check_file"] == "1"):
+                    if (args.__dict__[tmp_name]):  #rms. I don't like this.  I think I need a different way to check that the flagged arg is NOT filled in, versus filled in incorrecdtly
+                	    dirs_to_check.append(new_args[tmp_name])
+                if (arg_defs["check_file"] == "1"):  # same goes for files, see rms comment 2 lines above.
                 	if (not args.__dict__[tmp_name].endswith("ZZZ")): #I think this is the correct logic... RMS.
                 		file_paths_to_check.append(new_args[tmp_name])  
     for dir in dirs_to_check:
@@ -99,7 +98,20 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
     new_args["start_time_secs"] = start_time_secs
     new_args["pretty_start_time"] = pretty_start_time
     assert(the_out_dir != "")
+    if ((new_args["rerun_out_directory"])):
+        the_out_dir = new_args["rerun_out_directory"]
+        print("rerundir:", new_args["rerun_out_directory"])
+    else:
+        make_dir(the_out_dir)
+        the_out_dir = os.path.join(the_out_dir, pretty_start_time)
+    make_dir(the_out_dir)
+    print("theoutdir:", the_out_dir)
+    
+    print(new_args["remove_sra_files"])
+    
+    new_args["out_dir"] = the_out_dir
     new_args["log_file"] = rmslogging.build_log_file(the_out_dir, pretty_start_time)  #requires an out_dir RMS!!!
+    print ("logfile: ", new_args["log_file"])
     return new_args
                       
 def get_args(start_time_secs, pretty_start_time, command_line_def_file):
