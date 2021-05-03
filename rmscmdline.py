@@ -98,7 +98,7 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
     new_args["start_time_secs"] = start_time_secs
     new_args["pretty_start_time"] = pretty_start_time
     assert(the_out_dir != "")
-    if ((new_args["rerun_out_directory"])):
+    if ("rerun_out_directory" in new_args):
         the_out_dir = new_args["rerun_out_directory"]
         print("rerundir:", new_args["rerun_out_directory"])
     else:
@@ -106,9 +106,6 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
         the_out_dir = os.path.join(the_out_dir, pretty_start_time)
     make_dir(the_out_dir)
     print("theoutdir:", the_out_dir)
-    
-    print(new_args["remove_sra_files"])
-    
     new_args["out_dir"] = the_out_dir
     new_args["log_file"] = rmslogging.build_log_file(the_out_dir, pretty_start_time)  #requires an out_dir RMS!!!
     print ("logfile: ", new_args["log_file"])
