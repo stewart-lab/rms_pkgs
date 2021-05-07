@@ -91,8 +91,7 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
                 if (arg_defs["check_file"] == "1"):  # same goes for files, see rms comment 2 lines above.
                 	if (not args.__dict__[tmp_name].endswith("ZZZ")): #I think this is the correct logic... RMS.
                 		file_paths_to_check.append(new_args[tmp_name])  
-    for dir in dirs_to_check:
-        assert os.path.isdir(dir), dir + " directory does NOT exist!"
+    
     for fpath in file_paths_to_check:
         assert os.path.isfile(fpath), fpath + " file does NOT exist!"
     new_args["start_time_secs"] = start_time_secs
@@ -105,6 +104,9 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
         make_dir(the_out_dir)
         the_out_dir = os.path.join(the_out_dir, pretty_start_time)
     make_dir(the_out_dir)
+    
+    for dir in dirs_to_check:
+        assert os.path.isdir(dir), dir + " directory does NOT exist!"
     print("theoutdir:", the_out_dir)
     new_args["out_dir"] = the_out_dir
     new_args["log_file"] = rmslogging.build_log_file(the_out_dir, pretty_start_time)  #requires an out_dir RMS!!!
