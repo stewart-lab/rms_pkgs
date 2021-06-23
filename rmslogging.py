@@ -9,7 +9,10 @@ def build_log_file(out_dir, pretty_start_time):
 
 def open_log_file(log_file):
     return (open(log_file, "w+"))
-    
+
+def close_log_file(log_file_fh):
+    log_file_fh.close()
+        
 def write_args(my_args, logfile):
     logfile.write("args:\n")
     for attr, value in my_args.items():
