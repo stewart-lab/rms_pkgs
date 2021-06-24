@@ -81,15 +81,15 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
                 	tmp_name = arg_defs["alt_name"].lstrip("-")
                 new_args[tmp_name] = args.__dict__[tmp_name]  # if it is a directory or file,  new_args[tmp_name] will be overlain below
                 if (arg_defs["is_dir"] == "1" or arg_defs["is_file"] == "1"):
-                    if (args.__dict__[tmp_name]): #rms. I don't like this.  I think I need a different way to check that the flagged arg is NOT filled in, versus filled in incorrecdtly
+                    if (args.__dict__[tmp_name]): #rms. I don't like this.  I think I need a different way to check that the flagged arg is NOT filled in, versus filled in incorrectly
                 	    new_args[tmp_name] = os.path.abspath(args.__dict__[tmp_name]) 	   
                 if (arg_defs["is_out_dir"]  == "1"):
                 	the_out_dir = new_args[tmp_name]
                 if (arg_defs["check_dir"] == "1"):
-                    if (args.__dict__[tmp_name]):  #rms. I don't like this.  I think I need a different way to check that the flagged arg is NOT filled in, versus filled in incorrecdtly
+                    if (args.__dict__[tmp_name]):  #rms. I don't like this.  I think I need a different way to check that the flagged arg is NOT filled in, versus filled in incorrectly
                 	    dirs_to_check.append(new_args[tmp_name])
                 if (arg_defs["check_file"] == "1"):  # same goes for files, see rms comment 2 lines above.
-                	if (not args.__dict__[tmp_name].endswith("ZZZ")): #I think this is the correct logic... RMS.
+                	if (not args.__dict__[tmp_name].endswith("ZZZ")): #I think this is the correct logic... RMS.  magic number. Ugh.
                 		file_paths_to_check.append(new_args[tmp_name])  
     
     for fpath in file_paths_to_check:
