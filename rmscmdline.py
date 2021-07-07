@@ -11,7 +11,15 @@ def build_arg_parser(command_line_def_file):
         for line in cmd_line_f:
             if line:
                 (arg_def_list, arg_def_kwargs_dict) = get_arg_defs_needed_to_add(line)
-                parser.add_argument(*arg_def_list, **arg_def_kwargs_dict)
+                if ("default" in arg_def_kwargs_dict.keys()):
+                    if (arg_def_kwargs_dict['default'] == "BOOLEANFALSE"):  # magic number. ugh.
+                        parser.add_argument(*arg_def_list, action="store_true") #defaults to False
+                    elif (arg_def_kwargs_dict['default'] == "BOOLEANTRUE"):  # magic number. ugh.
+                        parser.add_argument(*arg_def_list, action="store_false") #defaults to True 
+                    else:   
+                        parser.add_argument(*arg_def_list, **arg_def_kwargs_dict)
+                else:
+                    parser.add_argument(*arg_def_list, **arg_def_kwargs_dict)      
     return parser
 
 def skip_headers(f, header_flag="#"):
@@ -63,7 +71,7 @@ def get_defs_for_flagged_arg(arg_defs):
     if (arg_defs["type"]):
         arg_def_kwargs_dict['type'] = eval(arg_defs["type"]) 
         if (arg_defs["default"]):
-            arg_def_kwargs_dict['default'] =  arg_def_kwargs_dict['type']( arg_def_kwargs_dict['default'])    
+            arg_def_kwargs_dict['default'] =  arg_def_kwargs_dict['type']( arg_def_kwargs_dict['default'])  
     return (arg_def_list, arg_def_kwargs_dict)
     
 def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_line_def_file):
@@ -91,7 +99,6 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
                 if (arg_defs["check_file"] == "1"):  # same goes for files, see rms comment 2 lines above.
                 	if (not args.__dict__[tmp_name].endswith("ZZZ")): #I think this is the correct logic... RMS.  magic number. Ugh.
                 		file_paths_to_check.append(new_args[tmp_name])  
-    
     for fpath in file_paths_to_check:
         assert os.path.isfile(fpath), fpath + " file does NOT exist!"
     new_args["start_time_secs"] = start_time_secs
