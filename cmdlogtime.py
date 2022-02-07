@@ -3,21 +3,27 @@ import argparse
 import os.path
 from pathlib import Path as ph
 import time
+import sys
+import pkg_resources
 
 # ---------------  FUNCTIONS -------------------
-def begin(command_line_def_file, sys_argv0):
+def begin(command_line_def_file):
     (start_time_secs, pretty_start_time) = get_time_and_pretty_time()
     print("pretty_start:", pretty_start_time)
     #time.sleep(2)  
     my_args = get_args(start_time_secs, pretty_start_time, command_line_def_file)
     logfile = open_log_file(my_args["log_file"])
-    write_args_and_files(my_args, sys_argv0, command_line_def_file, logfile)
+    write_args_and_files(my_args, sys.argv[0], command_line_def_file, logfile)
+    err_file = os.path.join(my_args["out_dir"], "err.txt")
+    sys.stderr = open(err_file, 'w')
     return (start_time_secs, pretty_start_time, my_args, logfile)
 
 def end(logfile, start_time_secs):
-    close_log_file(logfile)  
-    (end_time_secs, x) = get_time_and_pretty_time()
+    (end_time_secs, pretty_end_time) = get_time_and_pretty_time()
     total_elapsed_time = end_time_secs - start_time_secs
+    logfile.write("\n\nEndtime: " + pretty_end_time + "\n")
+    logfile.write("All done. Total elapsed time: " + str(total_elapsed_time) + " seconds.\n")
+    close_log_file(logfile)  
     print("All done. Total elapsed time: " + str(total_elapsed_time) + " seconds.\n")      
         
 def build_arg_parser(command_line_def_file):
@@ -159,6 +165,11 @@ def write_args_and_files (my_args, curr_executing_file, command_line_file, logfi
     logfile.write("args:\n")
     for attr, value in my_args.items():
         logfile.write(str(attr) + ":" + str(value) + "\n") 
+        
+    installed_packages = {d.project_name: d.version for d in pkg_resources.working_set}
+    logfile.write("Installed Packages:\n")
+    for key, value in installed_packages.items():
+        logfile.write(key + ":" + value + "\n")
     write_file_contents(curr_executing_file, logfile)
     write_file_contents(command_line_file, logfile)
         
