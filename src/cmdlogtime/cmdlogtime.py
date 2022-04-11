@@ -7,9 +7,9 @@ import sys
 import pkg_resources
 
 # ---------------  FUNCTIONS -------------------
-def begin(command_line_def_file):
+def begin(command_line_def_file, write_msgs_to_stdout):
     (start_time_secs, pretty_start_time) = get_time_and_pretty_time()
-    print("pretty_start:", pretty_start_time)
+    #print("pretty_start:", pretty_start_time)
     #time.sleep(2)  
     my_args = get_args(start_time_secs, pretty_start_time, command_line_def_file)
     addl_logfile = open_log_file(my_args["addl_logfile"])
@@ -22,15 +22,19 @@ def begin(command_line_def_file):
     write_files(sys.argv[0], command_line_def_file, script_logfile)
     err_file = os.path.join(my_args["out_dir"], "err.txt")
     sys.stderr = open(err_file, 'w')
+    if write_msgs_to_stdout:
+        print("pretty_start: ", pretty_start_time)
+        print("outdir: ", my_args["out_dir"])
     return (start_time_secs, pretty_start_time, my_args, addl_logfile, parms_logfile, script_logfile, pkgs_logfile)
 
-def end(logfile, start_time_secs):
+def end(logfile, start_time_secs, write_msgs_to_stdout):
     (end_time_secs, pretty_end_time) = get_time_and_pretty_time()
     total_elapsed_time = end_time_secs - start_time_secs
     logfile.write("\n\nEndtime: " + pretty_end_time + "\n")
     logfile.write("All done. Total elapsed time: " + str(total_elapsed_time) + " seconds.\n")
     close_log_file(logfile)  
-    print("All done. Total elapsed time: " + str(total_elapsed_time) + " seconds.\n")      
+    if write_msgs_to_stdout:
+        print("All done. Total elapsed time: " + str(total_elapsed_time) + " seconds.\n")      
         
 def build_arg_parser(command_line_def_file):
     with open(command_line_def_file, "r") as cmd_line_f:
@@ -180,14 +184,14 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
     
     for dir in dirs_to_check:
         assert os.path.isdir(dir), dir + " directory does NOT exist!"
-    print("theoutdir:", the_out_dir)
+    
     new_args["out_dir"] = the_out_dir
     addl_logfile, parms_logfile, script_logfile, pkgs_logfile = build_log_files(the_out_dir, pretty_start_time)  #requires an out_dir RMS!!!
     new_args["addl_logfile"] = addl_logfile
     new_args["parms_logfile"] = parms_logfile
     new_args["script_logfile"] = script_logfile
     new_args["pkgs_logfile"] = pkgs_logfile
-    print ("addl_logfile: ", new_args["addl_logfile"])
+    #print ("addl_logfile: ", new_args["addl_logfile"])
     return new_args
                       
 def get_args(start_time_secs, pretty_start_time, command_line_def_file):
