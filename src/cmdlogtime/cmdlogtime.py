@@ -7,7 +7,7 @@ import sys
 import pkg_resources
 
 # ---------------  FUNCTIONS -------------------
-def begin(command_line_def_file, write_msgs_to_stdout):
+def begin(command_line_def_file, write_msgs_to_stdout = 1):
     (start_time_secs, pretty_start_time) = get_time_and_pretty_time()
     #print("pretty_start:", pretty_start_time)
     #time.sleep(2)  
@@ -25,9 +25,9 @@ def begin(command_line_def_file, write_msgs_to_stdout):
     if write_msgs_to_stdout:
         print("pretty_start: ", pretty_start_time)
         print("outdir: ", my_args["out_dir"])
-    return (start_time_secs, pretty_start_time, my_args, addl_logfile, parms_logfile, script_logfile, pkgs_logfile)
+    return (start_time_secs, pretty_start_time, my_args, addl_logfile)
 
-def end(logfile, start_time_secs, write_msgs_to_stdout):
+def end(logfile, start_time_secs, write_msgs_to_stdout = 1):
     (end_time_secs, pretty_end_time) = get_time_and_pretty_time()
     total_elapsed_time = end_time_secs - start_time_secs
     logfile.write("\n\nEndtime: " + pretty_end_time + "\n")
@@ -100,9 +100,10 @@ def get_args_from_line(line, sep="|"):
             line)
             sys.exit(1) 
         if args["default"]:
-            if not args["type"] in ("float", "int", "bool", "str"):  
+            if not args["type"] in ("float", "int", "bool", "str",""): 
+                print("argstype:", args["type"]) 
                 print("Valid types for casting are 'float', 'int', 'bool', and 'str'. See: \n",
-                line)
+                    line)
                 sys.exit(1)     
     return args
     
