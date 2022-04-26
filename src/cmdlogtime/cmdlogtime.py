@@ -39,7 +39,8 @@ def end(logfile, start_time_secs, write_msgs_to_stdout = 1):
 def build_arg_parser(command_line_def_file):
     with open(command_line_def_file, "r") as cmd_line_f:
         first_line = skip_headers(cmd_line_f)
-        parser = argparse.ArgumentParser(description=get_description_from_first_line(first_line))
+        parser = argparse.ArgumentParser(description=get_description_from_first_line(first_line),
+                                formatter_class=argparse.ArgumentDefaultsHelpFormatter)
         for line in cmd_line_f:
             if line:
                 (arg_def_list, arg_def_kwargs_dict) = get_arg_defs_needed_to_add(line)
