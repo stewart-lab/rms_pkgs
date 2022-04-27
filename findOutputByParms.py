@@ -5,7 +5,7 @@ import cmdlogtime
 from subprocess import PIPE, run
 import re
 
-DATE_DIR_POS = -3  #Some Assumptions: 1) dir_of_out_dirs contains NO COLONS. 
+DATE_DIR_POS = -3  #Some Assumptions: 1) dir_of_out_dirs contains NO ^s. 
                    #                  2) DATE_DIR is third from the end. This could change if I change my parms_log structure 
 COMMAND_LINE_DEF_FILE = "./findOutputByParmsCommandLine.txt"
 def main():
@@ -43,7 +43,7 @@ def main():
 	    for res in res1:
 	        if (len(res) == 0):
 	            continue #rms, not sure why some lines are blank. UGH!
-	        parms_file = res.split("^")[0]  # NOTE, This assumes that the file path includes NO Colons!
+	        parms_file = res.split("^")[0]  # NOTE, This assumes that the file path includes NO ^s!
 	        date_dir = parms_file.split("/")[DATE_DIR_POS]
 	        this_set.add(date_dir)
 	    
@@ -60,7 +60,7 @@ def main():
 	        addl_logfile.write(date_dir + "\n")    
 	addl_logfile.write("at end:\n")
 	with open(out_file, "a") as out_f:
-	    for date_dir in intersection_of_all_sets:
+	    for date_dir in sorted(intersection_of_all_sets):
 	        addl_logfile.write(date_dir +"\n") 
 	        out_f.write(date_dir + "\n")   
 	cmdlogtime.end(addl_logfile, start_time_secs)

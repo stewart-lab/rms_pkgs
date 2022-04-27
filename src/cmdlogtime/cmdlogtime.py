@@ -8,9 +8,7 @@ import pkg_resources
 
 # ---------------  FUNCTIONS -------------------
 def begin(command_line_def_file, write_msgs_to_stdout = 1):
-    (start_time_secs, pretty_start_time) = get_time_and_pretty_time()
-    #print("pretty_start:", pretty_start_time)
-    #time.sleep(2)  
+    (start_time_secs, pretty_start_time) = get_time_and_pretty_time() 
     my_args = get_args(start_time_secs, pretty_start_time, command_line_def_file)
     addl_logfile = open_log_file(my_args["addl_logfile"])
     addl_logfile.write("Start: " + pretty_start_time +"\n")
@@ -193,7 +191,6 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
     new_args["parms_logfile"] = parms_logfile
     new_args["script_logfile"] = script_logfile
     new_args["pkgs_logfile"] = pkgs_logfile
-    #print ("addl_logfile: ", new_args["addl_logfile"])
     return new_args
                       
 def get_args(start_time_secs, pretty_start_time, command_line_def_file):
