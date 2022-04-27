@@ -5,7 +5,7 @@ import cmdlogtime
 from subprocess import PIPE, run
 import re
 
-DATE_DIR_POS = -3  #Some Assumptions: 1) dir_of_out_dirs contains NO ^s. 
+DATE_DIR_POS = -3  #Some Assumptions: 1) dir_of_out_dirs contains NO ^s.  
                    #                  2) DATE_DIR is third from the end. This could change if I change my parms_log structure 
 COMMAND_LINE_DEF_FILE = "./findOutputByParmsCommandLine.txt"
 def main():

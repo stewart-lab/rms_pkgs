@@ -129,7 +129,7 @@ def get_defs_for_positional_arg(arg_defs):
     return (arg_def_list, arg_def_kwargs_dict)
     
 def get_defs_for_flagged_arg(arg_defs):
-    assert(arg_defs["alt_name"])
+    assert(arg_defs["alt_name"]) 
     arg_def_list = []
     arg_def_list.append(arg_defs["name"])
     arg_def_list.append(arg_defs["alt_name"])
