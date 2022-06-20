@@ -10,7 +10,7 @@
 # -get_top_words|get top most probable words|0|0|0|0|0|--get_top_probable_words|BOOLEANFALSE|
 #
 # 
-# Example below
+# Example below. First line describes the program
 Compute AUCROC and other stats from infile. Print AUCROC and PR curves.
 out_dir|Top level directory that holds all the results|1|1|1|0|0|||
 infile|file path of file with a file with header in format call(1 or 0)\tX\tValue|0|0|0|1|1|||
