@@ -8,7 +8,7 @@
 # For KVAs for booleans, set default value to BOOLEANFALSE or BOOLEANTRUE.
 # If default is BOOLEANFALSE, then if you set the flag it will be True. (or vice-versa)
 # -get_top_words|get top most probable words|0|0|0|0|0|--get_top_probable_words|BOOLEANFALSE|
-#
+#  out_dir must be given.
 # 
 # Example below. First line describes the program
 Compute AUCROC and other stats from infile. Print AUCROC and PR curves.
