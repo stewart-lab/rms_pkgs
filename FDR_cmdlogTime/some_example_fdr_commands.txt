@@ -1,2 +1,3 @@
 python fdr_from_tsv.py ../out_fdr/ LimitedBH/best.Up.deSeq2.tsv
+python fdr_from_tsv.py ../out_fdr/ LimitedBH/best.Up.deSeq2_mod.tsv
 python fdr_from_tsv.py ../out_fdr/ LimitedBH/best.Up.deSeq2.tsv -genes_to_keep=LimitedBH/genesOfInterest.txt -out_file_pref=goi_
