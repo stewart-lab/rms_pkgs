@@ -1,0 +1,1 @@
+ python computeROC.py ../out_roc ./testInputForROC/just_Covid_negativesThrombOrNotWithCore98.txt -print_x_thresh=2
