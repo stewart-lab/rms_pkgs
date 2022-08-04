@@ -1,0 +1,1 @@
+python heatmap_from_tsv2.py ~/testCHTC/outHM/ ./testInputForHeatmapping/GoResponseToAmmoniumIonGenesTPMs.txt -rows_to_keep=./testInputForHeatmapping/genesToKeep.txt -cols_to_keep=./testInputForHeatmapping/samplesToKeep.txt -cluster_cols -cluster_rows
