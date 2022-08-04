@@ -1,7 +1,7 @@
 ### Replace the first parameter with the outdir of your choice ######### 
 ## print the threshold at every point
-python computeROC.py ~/testCHTC/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98.txt 
+python computeROC.py ~/testCHTC/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98_2colsUnsorted.txt
 ## print the threshold at every 3rd point
-python computeROC.py ~/testCHTC/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98.txt -print_x_thresh=3
+python computeROC.py ~/testCHTC/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98_2colsUnsorted.txt -print_x_thresh=3
 ## print the threshold at every 10000th point
-python computeROC.py ~/testCHTC/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98.txt -print_x_thresh=10000
+python computeROC.py ~/testCHTC/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98_2colsUnsorted.txt -print_x_thresh=10000

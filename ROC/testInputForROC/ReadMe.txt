@@ -4,4 +4,4 @@
 
 Your input file should be in the same format as the example input file, namely:
 header line
-0 or 1<tab>x<tab>numerical measure of interest
+0 or 1<tab>numerical measure of interest

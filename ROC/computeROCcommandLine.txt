@@ -14,4 +14,4 @@
 Compute AUCROC and other stats from infile. Print AUCROC and PR curves.
 out_dir|Top level directory that holds all the results|1|1|1|0|0|||
 infile|file path of file with a file with header in format call(1 or 0)\tX\tValue|0|0|0|1|1|||
--print_x_thresh|print every X threshold|0|0|0|0|0|--print_every_x_threshold|1|int
+-print_x_thresh|print every Xth threshold|0|0|0|0|0|--print_every_x_threshold|1|int

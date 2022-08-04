@@ -46,7 +46,7 @@ def main():
 			#	pred_vals.append(0.5)
 			#else:
 			#	pred_vals.append(0.2)
-			pred_vals.append(float(results[2]))
+			pred_vals.append(float(results[1]))
 	# get the ROC
 	fpr,tpr, thresholds = roc_curve(tfs, pred_vals, pos_label=1)
 	roc_auc = auc(fpr, tpr)
