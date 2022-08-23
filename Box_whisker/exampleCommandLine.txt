@@ -1,0 +1,1 @@
+(base) F5KN104YF9VN:Box_whisker Ron$ python box_whisker2.py ./outBW ExampleInputs/Post_vs_Pre_vape_forBWWithExtraJunk.txt ExampleInputs/Post_vs_Pre_vape_metadataWithExtraJunk.txt -x_lab="" -y_lab="GSVA Scores" -title="GO_INTERLEUKIN_6_BIOSYNTHETIC PROCESS Post vs Pre Vape" -outf="GOIL6BYSYN_withExtra.pdf"
