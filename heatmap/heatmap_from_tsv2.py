@@ -8,6 +8,7 @@ from scipy.stats import zscore
 import cmdlogtime
 import stew_util as su
 import os
+import conorm
 
 COMMAND_LINE_DEF_FILE = "./heatmap_from_tsv2_commandLine.txt"
 def main():
@@ -24,11 +25,15 @@ def main():
     
     df = maybe_take_log2(my_args["log2"], df)
     
+    df = maybe_norm(my_args['median_ratio_norm'], df)    
+    
     df = maybe_standardize(my_args["standardize_rows"], my_args["keep_standarddev_zero"], df)
     
     df = maybe_compute_zscores(my_args["use_raw_values"], my_args["standardize_rows"], df)
      
-    df = filter_rows (rows_to_keep, df)     
+    df = filter_rows (rows_to_keep, df) 
+    
+    
     
     # Set height based on number of genes. Set width to 10.  RMS. seems problematic
     height = (2+0.2*len(rows_to_keep))  
@@ -100,7 +105,11 @@ def maybe_take_log2(log2, df):
             columns=df.columns
         )
     return df
-        
+def maybe_norm(norm, df):
+    if norm:
+        df = conorm.mrn(df)
+    return df
+                   
 def maybe_standardize(standardize_rows, keep_standarddev_zero, df):
     if keep_standarddev_zero:
         if standardize_rows:

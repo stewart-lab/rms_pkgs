@@ -25,6 +25,7 @@ infile|file path of file with info to be heatmapped|0|0|0|1|1|||
 -link|linkage method (average, complete, single, weighted, centroid, median, ward)|0|0|0|0|0|--linkage_method|average|
 -dist|distance metric. See: https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html#scipy.spatial.distance.pdist|0|0|0|0|0|--distance_metric|euclidean|
 -l2|take log 2 + 1 of the data|0|0|0|0|0|--log2|BOOLEANFALSE|
+-norm|median by ratio normalize the data|0|0|0|0|0|--median_ratio_norm|BOOLEANFALSE|
 -title|title for heatmap|0|0|0|0|0|--title_for_heatmap||
 -titlefontsize|font size title for heatmap|0|0|0|0|0|--title_fontsize|40|int
 -suppress_row_dend|suppress row dendrogram|0|0|0|0|0|--suppress_row_dendrogram|BOOLEANFALSE|
