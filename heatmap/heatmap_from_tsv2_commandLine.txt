@@ -32,3 +32,5 @@ infile|file path of file with info to be heatmapped|0|0|0|1|1|||
 -suppress_col_dend|suppress col dendrogram|0|0|0|0|0|--suppress_col_dendrogram|BOOLEANFALSE|
 -xfontsize|font size of x labels|0|0|0|0|0|--x_fontsize||
 -yfontsize|font size of y labels|0|0|0|0|0|--y_fontsize||
+-min_req|minumum required measure to keep the row|0|0|0|0|0|--min_required|-10000|float
+-req_ratio|minumum ratio of max to min required to keep the row (for logged data this is max - min)|0|0|0|0|0|--required_ratio|-10000|float

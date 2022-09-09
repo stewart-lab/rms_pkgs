@@ -4,7 +4,7 @@ import traceback
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
-from scipy.stats import zscore
+from scipy.stats import zscore, variation
 import cmdlogtime
 import stew_util as su
 import os
@@ -14,32 +14,34 @@ COMMAND_LINE_DEF_FILE = "./heatmap_from_tsv2_commandLine.txt"
 def main():
     (start_time_secs, pretty_start_time, my_args, addl_logfile)= cmdlogtime.begin(COMMAND_LINE_DEF_FILE)   
     out_pdf = os.path.join(my_args["out_dir"], "heatmap.pdf")
+    out_tsv = os.path.join(my_args["out_dir"], "final_filtered_table.tsv")
     
     df = read_infile(my_args["infile"])
     
     df = filter_cols(my_args["cols_to_keep_for_heatmap"], df)
     
     df  = filter_rows_with_all_zeros(df)
+    
     df, rows_to_keep = specify_rows_to_keep(my_args["rows_to_keep_for_heatmap"], df)
     # need rows_to_keep later, as this will be used to filter the dataframe AFTER further zscore stddev0 filtering
     
+    df_pre_manip = df
     df = maybe_take_log2(my_args["log2"], df)
     
     df = maybe_norm(my_args['median_ratio_norm'], df)    
     
     df = maybe_standardize(my_args["standardize_rows"], my_args["keep_standarddev_zero"], df)
     
-    df = maybe_compute_zscores(my_args["use_raw_values"], my_args["standardize_rows"], df)
+    
+    df, did_z = maybe_compute_zscores(my_args["use_raw_values"], my_args["standardize_rows"], df)
      
-    df = filter_rows (rows_to_keep, df) 
-    
-    
+    df, df_pre_manip_filtered = filter_rows (rows_to_keep, df, did_z, df_pre_manip, my_args["min_required"], my_args["required_ratio"]) 
     
     # Set height based on number of genes. Set width to 10.  RMS. seems problematic
     height = (2+0.2*len(rows_to_keep))  
     width  = 10  
     
-    su.create_heatmap(
+    cm = su.create_heatmap(
         df, 
         out_pdf,
         my_args["colormap"],
@@ -58,6 +60,14 @@ def main():
         my_args["x_fontsize"],
         my_args["y_fontsize"]
     )
+    #import pdb
+    #pdb.set_trace()
+    print(cm.dendrogram_row.reordered_ind)
+    #import pdb
+    #pdb.set_trace()
+    #df_pre_manip_filtered = df_pre_manip_filtered.reindex(cm.dendrogram_row.reordered_ind)
+    df_pre_manip_filtered = df_pre_manip_filtered.reindex(df_pre_manip_filtered.index[cm.dendrogram_row.reordered_ind])
+    df_pre_manip_filtered.to_csv(out_tsv, sep="\t")
     cmdlogtime.end(addl_logfile, start_time_secs) 
 
 # ----------------------------------- FUNCTIONS  -------------------------------------
@@ -125,9 +135,11 @@ def maybe_standardize(standardize_rows, keep_standarddev_zero, df):
     return df
 
 def maybe_compute_zscores(use_raw_values, standardize_rows, df):
+    did_z = False
     if (use_raw_values  or standardize_rows):
         df_to_use = df  
-    else:  
+    else: 
+        did_z = True 
         # Compute Z-scores row-wise (i.e. for each gene)
         #X_zscore = df_input.apply(my_zscore, axis=1).to_list()  #rms see note on my_zscore()      
         X_zscore = zscore(np.array(df), axis=1)
@@ -141,16 +153,49 @@ def maybe_compute_zscores(use_raw_values, standardize_rows, df):
         ) 
         df_to_use = df_zscore.replace(np.nan, 0)  
         #df_to_use = df_zscore  # rms, this is what we would do if we fix the my_zscore() function       
-    return df_to_use
+    return df_to_use, did_z
 
-def filter_rows (rows_to_keep, df):    
+def filter_rows (rows_to_keep, df, did_z, df_pre_manip, min_required, required_ratio):    
     # Filter the data for the rows of interest
+    #print("PRE_Z", df_pre_manip)
+    #print("THEDF", df)
+    #print("Rows_to_keep:", rows_to_keep)
+    #import pdb
+    #pdb.set_trace
     rows_to_keep = rows_to_keep & set(df.index)
-    print("length rows to keep after all filtering:", len(rows_to_keep))
+    #print("length rows to keep after all filtering:", len(rows_to_keep))
     df = df.loc[rows_to_keep]
-    print('Shape of df_to_use after filtering rows: ', df.shape)
-    print(df)    
-    return df
+    df_pre_manip = df_pre_manip.loc[rows_to_keep]
+    if did_z:     
+        min_dfpre_series = df_pre_manip.min()
+        #print("mindfseries:", min_dfpre_series)
+        min_dfpre = min_dfpre_series.min()
+        #print("mindfpre: ", min_dfpre)
+        rows_to_keep2 = set()
+        for row in df_pre_manip.iterrows():
+            min_val = min(row[1])
+            max_val = max(row[1])
+            #print ("min: ",  min_val,  " max: ", max_val)
+            if (min_dfpre < 0):  #probably logged Info
+                max_min_ratio = max_val - min_val
+            else:  # probably tpms or something like that
+                #add 1 to max and min to prevent divide by zero errors
+                max_min_ratio =    (max_val +1)/(min_val +1)
+            if max_min_ratio >= required_ratio:
+                for val in row[1]:
+                    if val >= min_required:
+                        rows_to_keep2.add(row[0])
+                        break
+            #coeff_of_var = variation(row[1])
+            #print ("row:", row[0], row[1], " cv:", coeff_of_var) 
+        print(rows_to_keep2)   
+        df = df.loc[rows_to_keep2]
+        df_pre_manip = df_pre_manip.loc[rows_to_keep2]
+    print('Shape of df after filtering rows: ', df.shape)
+    print(df)
+    print(df_pre_manip)
+    return df, df_pre_manip
+
 #def my_zscore(row):
 # RMS NOTE:  keeping this here as an example of apply.
 # RMS NOTE:  This won't work in that we will never hit the exception, as zscore returns nan

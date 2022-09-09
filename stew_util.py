@@ -47,8 +47,8 @@ def create_heatmap(df_to_use,
             col_cluster=cluster_columns, 
             cmap=colormap,
             standard_scale=stand,
-            vmin=-3, 
-            vmax=3, 
+            vmin=-3,   # -3
+            vmax=3,  # 3
             dendrogram_ratio=(2/10, 2/height),
             figsize=figsize,
             xticklabels=1,
@@ -95,3 +95,5 @@ def create_heatmap(df_to_use,
             print("Clustermap failed. Often this is because of divide by zero when keep_sd0 is set.")
         else:
             print ("Clustermap failed.")   
+    
+    return cm
