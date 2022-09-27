@@ -38,7 +38,7 @@ def main():
     df, df_pre_manip_filtered = filter_rows (rows_to_keep, df, did_z, df_pre_manip, my_args["min_required"], my_args["required_ratio"]) 
     
     # Set height based on number of genes. Set width to 10.  RMS. seems problematic
-    height = (2+0.2*len(rows_to_keep))  
+    height = (2+0.2*len(rows_to_keep) + my_args["height_pad"])  
     width  = 10  
     
     cm = su.create_heatmap(
