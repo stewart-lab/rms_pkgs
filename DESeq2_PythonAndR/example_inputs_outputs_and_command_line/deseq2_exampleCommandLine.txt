@@ -1,0 +1,4 @@
+(base) F5KN104YF9VN:Deseq2Code Ron$ python runDeseq2.py ./example_inputs_outputs_and_command_line/Deseq2_out_example  example_inputs_outputs_and_command_line/genes.ec_just0657_p2AECandSidePop.txt ./example_inputs_outputs_and_command_line/metadataForAECvsSidePop.tsv CType CType AEC SidePop -f CType:CType 
+pretty_start:  2022_05_27_12_36_32
+outdir:  /Users/Ron/Desktop/PriorityFolders/Deseq2_info/Deseq2Code/example_inputs_outputs_and_command_line/Deseq2_out_example/2022_05_27_12_36_32
+All done. Total elapsed time: 21.0 seconds.
