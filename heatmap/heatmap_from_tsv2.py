@@ -62,11 +62,11 @@ def main():
     )
     #import pdb
     #pdb.set_trace()
-    print(cm.dendrogram_row.reordered_ind)
-    #import pdb
-    #pdb.set_trace()
-    #df_pre_manip_filtered = df_pre_manip_filtered.reindex(cm.dendrogram_row.reordered_ind)
-    df_pre_manip_filtered = df_pre_manip_filtered.reindex(df_pre_manip_filtered.index[cm.dendrogram_row.reordered_ind])
+    try:
+        print(cm.dendrogram_row.reordered_ind)
+        df_pre_manip_filtered = df_pre_manip_filtered.reindex(df_pre_manip_filtered.index[cm.dendrogram_row.reordered_ind])
+    except:
+        print("Probably no dendrogram")
     df_pre_manip_filtered.to_csv(out_tsv, sep="\t")
     cmdlogtime.end(addl_logfile, start_time_secs) 
 
