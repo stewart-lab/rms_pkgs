@@ -21,6 +21,7 @@
 # Example below
 Compute FDR from a TSV of P-values
 out_dir|Top level directory that holds all the results|1|1|1|0|0|||
-infile|file path of file with identifier and p-value. Should have a header of pval for p-value column|0|0|0|1|1|||
--genes_to_keep|list of genes to keep. Should have a header.|0|0|0|1|1|--genes_to_keep_for_fdr|ALLZZZ|
+infile|file path of file with identifier in first column. Should have a header line|0|0|0|1|1|||
+-rows_to_keep|list of rows to keep. Should have a header.|0|0|0|1|1|--rows_to_keep_for_fdr|ALLZZZ|
 -out_file_pref|Output file prefix.|0|0|0|0|0|--output_file_prefix|ALLZZZ|
+-pvalheader|column header for the p value column|0|0|0|0|0|--p_value_header|pval|
