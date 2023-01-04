@@ -74,7 +74,7 @@ def main():
 def read_infile(infile):
     df = pd.read_csv(infile, sep='\t', index_col=0)
     print('Shape of data before any filtering: ', df.shape)
-    print(df)
+    #print(df)
     return df
 
 def filter_cols(cols_to_keep_file, df):
@@ -102,8 +102,11 @@ def specify_rows_to_keep(rows_to_keep, df):
         df_rows = pd.read_csv(rows_to_keep, sep='\t', index_col=0, header=None)
     print('shape of df_rows:', df_rows.shape)
     
-    rows_to_keep = set()
-    rows_to_keep = (set(df.index) & set(df_rows.index)) 
+    #rows_to_keep = set()
+    rows_to_keep = []    
+    #rows_to_keep = (set(df.index) & set(df_rows.index)) 
+    rows_to_keep = [x for x in df.index if x in df_rows.index]
+    #print("rtk:", rows_to_keep)
     return df, rows_to_keep    
     
 def maybe_take_log2(log2, df):
@@ -162,8 +165,14 @@ def filter_rows (rows_to_keep, df, did_z, df_pre_manip, min_required, required_r
     #print("Rows_to_keep:", rows_to_keep)
     #import pdb
     #pdb.set_trace
-    rows_to_keep = rows_to_keep & set(df.index)
+    #rows_to_keep = rows_to_keep & set(df.index)
+    #rows_to_keep = (set(df.index) & set(df_rows.index)) 
+    rows_to_keep = [x for x in rows_to_keep if x in df.index]
     #print("length rows to keep after all filtering:", len(rows_to_keep))
+    #print("rows to keep")
+    #print(rows_to_keep)
+    #print ("df at top of filter rows")
+    #print (df)
     df = df.loc[rows_to_keep]
     df_pre_manip = df_pre_manip.loc[rows_to_keep]
     if did_z:     
@@ -172,6 +181,7 @@ def filter_rows (rows_to_keep, df, did_z, df_pre_manip, min_required, required_r
         min_dfpre = min_dfpre_series.min()
         #print("mindfpre: ", min_dfpre)
         rows_to_keep2 = set()
+        rows_to_keep2 = []
         for row in df_pre_manip.iterrows():
             min_val = min(row[1])
             max_val = max(row[1])
@@ -184,7 +194,7 @@ def filter_rows (rows_to_keep, df, did_z, df_pre_manip, min_required, required_r
             if max_min_ratio >= required_ratio:
                 for val in row[1]:
                     if val >= min_required:
-                        rows_to_keep2.add(row[0])
+                        rows_to_keep2.append(row[0])
                         break
             #coeff_of_var = variation(row[1])
             #print ("row:", row[0], row[1], " cv:", coeff_of_var) 
@@ -193,7 +203,7 @@ def filter_rows (rows_to_keep, df, did_z, df_pre_manip, min_required, required_r
         df_pre_manip = df_pre_manip.loc[rows_to_keep2]
     print('Shape of df after filtering rows: ', df.shape)
     print(df)
-    print(df_pre_manip)
+    #print(df_pre_manip)
     return df, df_pre_manip
 
 #def my_zscore(row):
