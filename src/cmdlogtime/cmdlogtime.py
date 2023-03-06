@@ -8,6 +8,7 @@ import pkg_resources
 
 # ---------------  FUNCTIONS -------------------
 def begin(command_line_def_file, write_msgs_to_stdout = 1):
+    print ("IN LOCAL")
     (start_time_secs, pretty_start_time) = get_time_and_pretty_time() 
     my_args = get_args(start_time_secs, pretty_start_time, command_line_def_file)
     addl_logfile = open_log_file(my_args["addl_logfile"])
@@ -179,7 +180,10 @@ def massage_and_validate_args(args, start_time_secs, pretty_start_time, command_
         print("rerundir in cmdlogtime:", new_args["rerun_out_directory"])
     else:
         make_dir(the_out_dir)
-        the_out_dir = os.path.join(the_out_dir, pretty_start_time)
+        pretty_start_time_mod = pretty_start_time
+        if ("out_dir_suffix" in new_args and new_args["out_dir_suffix"] != "AAAAZZZZ"):
+            pretty_start_time_mod = pretty_start_time_mod + "_" + str(new_args["out_dir_suffix"])
+        the_out_dir = os.path.join(the_out_dir, pretty_start_time_mod)
     make_dir(the_out_dir)
     
     for dir in dirs_to_check:
