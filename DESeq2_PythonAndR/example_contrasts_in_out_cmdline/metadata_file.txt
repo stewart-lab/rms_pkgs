@@ -1,0 +1,13 @@
+ID	Group
+F1	Control_3
+F2	Control_3
+F3	Control_3
+F4	Static_3
+F5	Static_3
+F6	Static_3
+F7	Steady_3
+F8	Steady_3
+F9	Steady_3
+F10	Physiological_3
+F11	Physiological_3
+F12	Physiological_3

@@ -1,0 +1,7 @@
+Control	Sample
+Control_3	Static_3
+Control_3	Steady_3
+Control_3	Physiological_3
+Static_3	Steady_3
+Static_3	Physiological_3
+Steady_3	Physiological_3
