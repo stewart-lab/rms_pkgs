@@ -1,0 +1,6 @@
+Start: 2023_03_23_14_53_11
+Starting run_all_DE_constrasts with runDeseq2
+
+
+Endtime: 2023_03_23_14_53_50
+All done. Total elapsed time: 39.0 seconds.

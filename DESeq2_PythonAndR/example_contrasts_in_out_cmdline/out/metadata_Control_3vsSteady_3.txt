@@ -1,0 +1,7 @@
+Sample	CType
+F1	Control_3
+F2	Control_3
+F3	Control_3
+F7	Steady_3
+F8	Steady_3
+F9	Steady_3

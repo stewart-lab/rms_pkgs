@@ -1,0 +1,7 @@
+Sample	CType
+F4	Static_3
+F5	Static_3
+F6	Static_3
+F7	Steady_3
+F8	Steady_3
+F9	Steady_3

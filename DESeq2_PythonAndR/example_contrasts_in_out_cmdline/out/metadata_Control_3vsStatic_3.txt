@@ -1,0 +1,7 @@
+Sample	CType
+F1	Control_3
+F2	Control_3
+F3	Control_3
+F4	Static_3
+F5	Static_3
+F6	Static_3

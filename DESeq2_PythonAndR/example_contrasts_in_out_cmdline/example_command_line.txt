@@ -1,0 +1,1 @@
+python run_all_DE_contrasts_cmdlogtime.py example_contrasts_in_out_cmdline/out/ genes.no_mt.ec.tab_nodescr_example.txt metadata_file.txt -cf control_file.txt
