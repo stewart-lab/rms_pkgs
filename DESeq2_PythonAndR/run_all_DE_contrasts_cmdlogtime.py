@@ -58,7 +58,7 @@ def main():
                 directory= str(i[0])+"vs"+str(i[1])
                 path = os.path.join(wd, directory)
                 os.mkdir(path)
-                os.system("python runDeseq2.py {} {} {} CType CType {} {} -f CType:CType".format(path, counts, outfile, str(i[0]), str(i[1])))
+                os.system("python runDeseq2.py {} {} {} CType CType {} {} -f CType:CType".format(path, counts, outfile, str(i[1]), str(i[0])))
             else:
                 if i[1] == ctrl:
                     outfile= wd+"/metadata_"+str(i[1])+"vs"+str(i[0])+".txt"
@@ -68,7 +68,7 @@ def main():
                     directory= str(i[1])+"vs"+str(i[0])
                     path = os.path.join(wd, directory)
                     os.mkdir(path)
-                    os.system("python runDeseq2.py {} {} {} CType CType {} {} -f CType:CType".format(path, counts, outfile, str(i[1]), str(i[0])))
+                    os.system("python runDeseq2.py {} {} {} CType CType {} {} -f CType:CType".format(path, counts, outfile, str(i[0]), str(i[1])))
                 else:
                     pass
         if ctrlfile != None: # check for control file
@@ -86,7 +86,7 @@ def main():
                         directory= str(i[0])+"vs"+str(i[1])
                         path = os.path.join(wd, directory)
                         os.mkdir(path)
-                        os.system("python runDeseq2.py {} {} {} CType CType {} {} -f CType:CType".format(path, counts, outfile, str(i[0]), str(i[1])))
+                        os.system("python runDeseq2.py {} {} {} CType CType {} {} -f CType:CType".format(path, counts, outfile, str(i[1]), str(i[0])))
                     # check if reverse pair is in pair file
                     elif tuple(Reverse(i)) == tuple(r):
                         outfile= wd+"/metadata_"+str(i[1])+"vs"+str(i[0])+".txt"
@@ -96,7 +96,7 @@ def main():
                         directory= str(i[1])+"vs"+str(i[0])
                         path = os.path.join(wd, directory)
                         os.mkdir(path)
-                        os.system("python runDeseq2.py {} {} {} CType CType {} {} -f CType:CType".format(path, counts, outfile, str(i[1]), str(i[0])))
+                        os.system("python runDeseq2.py {} {} {} CType CType {} {} -f CType:CType".format(path, counts, outfile, str(i[0]), str(i[1])))
         else: # if no controls then do all pairs
             outfile= wd+"/metadata_"+str(i[0])+"vs"+str(i[1])+".txt"
             oup= open(outfile,"w")
@@ -105,7 +105,7 @@ def main():
             directory= str(i[0])+"vs"+str(i[1])
             path = os.path.join(wd, directory)
             os.mkdir(path)
-            os.system("python runDeseq2.py {} {} {} CType CType {} {} -f CType:CType".format(path, counts, outfile, str(i[0]), str(i[1])))
+            os.system("python runDeseq2.py {} {} {} CType CType {} {} -f CType:CType".format(path, counts, outfile, str(i[1]), str(i[0])))
 
     cmdlogtime.end(addl_logfile, start_time_secs)
 	
