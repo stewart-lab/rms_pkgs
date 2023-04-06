@@ -1,0 +1,1 @@
+/Users/bmoore/Desktop/GitHub/Novogene_Tabima/expression_data/combat_seq_corrected_norm_counts_biovar_noSYT4.txt

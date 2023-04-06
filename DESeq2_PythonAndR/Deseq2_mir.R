@@ -81,8 +81,10 @@ metaData <- read.csv(metadata_tsv, header=TRUE, sep ="\t")
 # set up output directory and output files
 out_prefix = paste0("DE_contrast_", contrast, "_design_", design_to_use, "_cond1_", cond1, "_cond2_", cond2) 
 out_name_full  = paste0(out_prefix, ".tsv")
+out_name_ct  = paste0(out_prefix, "_normalized_counts.txt")
 volc_name_full = paste0("volc_", out_prefix, ".pdf")
 out_name_fp = file.path(out_dir, out_name_full)
+out_name_fp2 = file.path(out_dir, out_name_ct)
 volc_name_fp = file.path(out_dir, volc_name_full)
 if (! startsWith(out_dir, "/")) {
   out_dir = file.path(getwd(), out_dir)
@@ -119,7 +121,7 @@ rnd_countData <- rnd(countData[,-1])
 rnd_countData <- data.frame(GENE_ID = countData[,1],rnd_countData)
 
 # run deseq2 function
-run_deseq <- function(counts_mtx, meta_data, cond1, cond2, out_f, design_to_use, contrast, low_count_cutoff, proportion_of_samples_above_low_count_cutoff) {
+run_deseq <- function(counts_mtx, meta_data, cond1, cond2, out_f, out_f2, design_to_use, contrast, low_count_cutoff, proportion_of_samples_above_low_count_cutoff) {
   design_to_use <- paste0("~", design_to_use)
   dds <- DESeqDataSetFromMatrix(
         countData=counts_mtx, 
@@ -139,7 +141,8 @@ run_deseq <- function(counts_mtx, meta_data, cond1, cond2, out_f, design_to_use,
   print(sizeFactors(dds2)) # normalization factor
   normalized_counts <- counts(dds2, normalized=TRUE) # normalized counts
   # write normalized counts
-  write.table(normalized_counts, file=out_f+"_normalized_counts.txt", sep="\t", quote=F, col.names=NA)
+  
+  write.table(normalized_counts, file= out_f2, sep="\t", quote=F, col.names=NA)
   # get contrasts
   dds@colData[contrast] <- relevel(unlist(dds@colData[contrast]), ref = cond1)  
   
@@ -158,7 +161,7 @@ run_deseq <- function(counts_mtx, meta_data, cond1, cond2, out_f, design_to_use,
 }  # END run_deseq function
 
 # run deseq2
-run_deseq(rnd_countData, metaData, cond1, cond2, out_name_fp, design_to_use, contrast, low_count_cutoff, proportion_of_samples_above_low_count_cutoff)
+run_deseq(rnd_countData, metaData, cond1, cond2, out_name_fp, out_name_fp2, design_to_use, contrast, low_count_cutoff, proportion_of_samples_above_low_count_cutoff)
 
 #   -------------------------  END -----------------------
 #   NOTES BELOW ON PARAMETERS THAT RON HAS BEEN USING, AND OTHER NOTES ABOUT DESIGN formulae etc...
