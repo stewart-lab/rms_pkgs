@@ -15,4 +15,4 @@ wd|working directory where expr_file, metadata file, and control file are|1|1|1|
 expr_file|Counts file (un-normalized, tsv)|0|0|0|1|0|||
 metadata|Metadata file (tsv)|0|0|0|1|0|||
 -c|single control for contrast|0|0|0|0|0|--control|NA|str
--cf|file with control-sample pairs for contrast|0|0|0|1|0|--control_file|NA|
+-cf|file with control-sample pairs for contrast|0|0|0|1|0|--control_file||
