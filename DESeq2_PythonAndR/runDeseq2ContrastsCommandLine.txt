@@ -16,3 +16,4 @@ expr_file|Counts file (un-normalized, tsv)|0|0|0|1|0|||
 metadata|Metadata file (tsv)|0|0|0|1|0|||
 -c|single control for contrast|0|0|0|0|0|--control|NA|str
 -cf|file with control-sample pairs for contrast|0|0|0|1|0|--control_file||
+-b|Batch model batch effect-need Batch in metadata-boolean T or F|0|0|0|0|0|--batch|BOOLEANFALSE|

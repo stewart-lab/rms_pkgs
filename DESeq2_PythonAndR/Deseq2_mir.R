@@ -129,6 +129,7 @@ run_deseq <- function(counts_mtx, meta_data, cond1, cond2, out_f, out_f2, design
         design=formula(design_to_use),
         tidy = TRUE
       )
+  print(dds)
   ncol = (ncol(dds))
   # Filter out some genes based on a count_cutoff and a sample_cutoff
   num_samples_cutoff = round(ncol * proportion_of_samples_above_low_count_cutoff)
@@ -141,11 +142,10 @@ run_deseq <- function(counts_mtx, meta_data, cond1, cond2, out_f, out_f2, design
   print(sizeFactors(dds2)) # normalization factor
   normalized_counts <- counts(dds2, normalized=TRUE) # normalized counts
   # write normalized counts
-  
   write.table(normalized_counts, file= out_f2, sep="\t", quote=F, col.names=NA)
   # get contrasts
   dds@colData[contrast] <- relevel(unlist(dds@colData[contrast]), ref = cond1)  
-  
+  print(dds@colData[contrast])
   dds <- DESeq(dds)
   # Note that independentFiltering does NOT seem to be happening, even though it is the default.
   res <- results(dds, contrast=c(contrast,cond1, cond2))
