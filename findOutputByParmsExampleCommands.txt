@@ -1,0 +1,5 @@
+# search based on just one key^value pair
+python findOutputByParms.py out_findOutputByParms ./Box_whisker/outBW/ infile^/Users/Ron/Desktop/rms_pkgs/Box_whisker/ExampleInputs/Post_vs_Pre_vape_forBWWithExtraJunk.txt
+
+# search based on two key^value pairs
+python findOutputByParms.py out_findOutputByParms ./Box_whisker/outBW/ metadata^/Users/Ron/Desktop/Box_whisker/Post_vs_Pre_vape_metadata.txt,infile^/Users/Ron/Desktop/Box_whisker/Post_vs_Pre_vape_forBW.txt
