@@ -1,5 +1,0 @@
-Start: 2022_06_06_15_57_11
-
-
-Endtime: 2022_06_06_15_57_11
-All done. Total elapsed time: 0.0 seconds.
