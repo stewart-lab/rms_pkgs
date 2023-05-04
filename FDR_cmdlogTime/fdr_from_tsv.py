@@ -27,8 +27,8 @@ def main():
     else:
         df_rows = pd.read_csv(rows_to_keep_f, sep='\t', index_col=0)  # header=None)
     print('shape of df_rows:', df_rows.shape)
-    rows_to_keep = set()
-    rows_to_keep = (set(df.index) & set(df_rows.index))
+    rows_to_keep = list()
+    rows_to_keep = list((set(df.index) & set(df_rows.index)))
     df_to_use = df.loc[rows_to_keep]
     print('Shape of df_to_use after filtering rows: ', df_to_use.shape)
 
