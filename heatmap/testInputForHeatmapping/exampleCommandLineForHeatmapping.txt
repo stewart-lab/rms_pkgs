@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 
 python heatmap_from_tsv2.py ../../rms_pkgs_test_output/outHM/ ./testInputForHeatmapping/GoResponseToAmmoniumIonGenesTPMs.txt -rows_to_keep=./testInputForHeatmapping/genesToKeep.txt -cols_to_keep=./testInputForHeatmapping/samplesToKeep.txt -cluster_cols -cluster_rows
+=======
+
+python heatmap_from_tsv2.py ../../rms_pkgs_test_output/outHM/ ./testInputForHeatmapping/GoResponseToAmmoniumIonGenesTPMs.txt -rows_to_keep=./testInputForHeatmapping/genesToKeep.txt -cols_to_keep=./testInputForHeatmapping/samplesToKeep.txt -cluster_cols -cluster_rows
+>>>>>>> 20c58a2bdbc5ccefbb71214b3c892cf97f83b4e8

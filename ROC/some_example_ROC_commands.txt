@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### Replace the first parameter with the outdir of your choice ######### 
 ## print the threshold at every point
 python computeROC.py ../../rms_pkgs_test_output/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98_2colsUnsorted.txt
@@ -5,3 +6,12 @@ python computeROC.py ../../rms_pkgs_test_output/outROC/  testInputForROC/just_Co
 python computeROC.py ../../rms_pkgs_test_output/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98_2colsUnsorted.txt -print_x_thresh=3
 ## print the threshold at every 10000th point
 python computeROC.py ../../rms_pkgs_test_output/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98_2colsUnsorted.txt -print_x_thresh=10000
+=======
+### Replace the first parameter with the outdir of your choice ######### 
+## print the threshold at every point
+python computeROC.py ../../rms_pkgs_test_output/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98_2colsUnsorted.txt
+## print the threshold at every 3rd point
+python computeROC.py ../../rms_pkgs_test_output/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98_2colsUnsorted.txt -print_x_thresh=3
+## print the threshold at every 10000th point
+python computeROC.py ../../rms_pkgs_test_output/outROC/  testInputForROC/just_Covid_negativesThrombOrNotWithCore98_2colsUnsorted.txt -print_x_thresh=10000
+>>>>>>> 20c58a2bdbc5ccefbb71214b3c892cf97f83b4e8
