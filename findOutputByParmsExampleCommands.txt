@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 # search based on just one key^value pair
-python findOutputByParms.py ../rms_pkgs_test_output/out_findOutputByParms/ ../rms_pkgs_test_output/outBW/ infile^/Users/Ron/Desktop/rms_pkgs/Box_whisker/ExampleInputs/Post_vs_Pre_vape_forBWWithExtraJunk.txt
+python findOutputByParms.py ../rms_pkgs_test_output/out_findOutputByParms/ ../rms_pkgs_test_output/outBW/ \
+    infile^/Users/Ron/Desktop/rms_pkgs/Box_whisker/ExampleInputs/Post_vs_Pre_vape_forBWWithExtraJunk.txt
 
 # search based on two key^value pairs
-=======
-# search based on just one key^value pair
-python findOutputByParms.py ../rms_pkgs_test_output/out_findOutputByParms/ ../rms_pkgs_test_output/outBW/ infile^/Users/Ron/Desktop/rms_pkgs/Box_whisker/ExampleInputs/Post_vs_Pre_vape_forBWWithExtraJunk.txt
-
-# search based on two key^value pairs
->>>>>>> 20c58a2bdbc5ccefbb71214b3c892cf97f83b4e8
-python findOutputByParms.py ../rms_pkgs_test_output/out_findOutputByParms/ ../rms_pkgs_test_output/outBW/ metadata^/Users/Ron/Desktop/Box_whisker/Post_vs_Pre_vape_metadata.txt,infile^/Users/Ron/Desktop/Box_whisker/Post_vs_Pre_vape_forBW.txt
+python findOutputByParms.py ../rms_pkgs_test_output/out_findOutputByParms/ ../rms_pkgs_test_output/outBW/ \
+    metadata^/Users/Ron/Desktop/Box_whisker/Post_vs_Pre_vape_metadata.txt,infile^/Users/Ron/Desktop/Box_whisker/Post_vs_Pre_vape_forBW.txt
