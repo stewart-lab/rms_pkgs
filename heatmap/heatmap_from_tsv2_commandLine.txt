@@ -24,7 +24,7 @@ infile|file path of file with info to be heatmapped|0|0|0|1|1|||
 -stand|standardize rows (subtract min divide by max)|0|0|0|0|0|--standardize_rows|BOOLEANFALSE|
 -link|linkage method (average, complete, single, weighted, centroid, median, ward)|0|0|0|0|0|--linkage_method|average|
 -dist|distance metric. See: https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html#scipy.spatial.distance.pdist|0|0|0|0|0|--distance_metric|euclidean|
--l2|take log 2 + 1 of the data|0|0|0|0|0|--log2|BOOLEANFALSE|
+-ln|take natural log  + 1 of the data|0|0|0|0|0|--l_nat|BOOLEANFALSE|
 -norm|median by ratio normalize the data|0|0|0|0|0|--median_ratio_norm|BOOLEANFALSE|
 -title|title for heatmap|0|0|0|0|0|--title_for_heatmap||
 -titlefontsize|font size title for heatmap|0|0|0|0|0|--title_fontsize|40|int
@@ -35,3 +35,7 @@ infile|file path of file with info to be heatmapped|0|0|0|1|1|||
 -min_req|minumum required measure to keep the row|0|0|0|0|0|--min_required|-10000|float
 -req_ratio|minumum ratio of max to min required to keep the row (for logged data this is max - min)|0|0|0|0|0|--required_ratio|-10000|float
 -heightpad|extra height to add to heatmap|0|0|0|0|0|--height_pad|0|int
+-xlabel|x label for heatmap|0|0|0|0|0|--x_label||
+-ylabel|y label for heatmap|0|0|0|0|0|--y_label||
+-vmin|minimum for color scheme|0|0|0|0|0|--v_min|-3|int
+-vmax|maximum for color scheme|0|0|0|0|0|--v_max|3|int

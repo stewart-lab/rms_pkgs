@@ -25,7 +25,7 @@ def main():
     # need rows_to_keep later, as this will be used to filter the dataframe AFTER further zscore stddev0 filtering
 
     df_pre_manip = df
-    df = maybe_take_log2(my_args["log2"], df)
+    df = maybe_take_natural_log(my_args["l_nat"], df)
 
     df = maybe_norm(my_args['median_ratio_norm'], df)
 
@@ -56,7 +56,11 @@ def main():
         width,
         my_args["title_fontsize"],
         my_args["x_fontsize"],
-        my_args["y_fontsize"]
+        my_args["y_fontsize"],
+        my_args["x_label"],
+        my_args["y_label"],
+        my_args["v_min"],
+        my_args["v_max"]
     )
     try:
         print(cm.dendrogram_row.reordered_ind)
@@ -110,9 +114,9 @@ def specify_rows_to_keep(rows_to_keep, df):
     return df, rows_to_keep
 
 
-def maybe_take_log2(log2, df):
-    if log2:
-        # take log2(val + 1)
+def maybe_take_natural_log(l_nat, df):
+    if l_nat:
+        # take ln(val + 1)
         df = pd.DataFrame(
             data=np.log(np.array(df) + 1),
             index=df.index,

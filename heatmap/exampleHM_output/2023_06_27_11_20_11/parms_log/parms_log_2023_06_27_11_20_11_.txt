@@ -1,0 +1,38 @@
+--------------  START COMMAND LINE USED  -------------
+python  heatmap_from_tsv2.py ./exampleHM_output/ ./testInputForHeatmapping/BEM_inputs/Project_Human_Thymus_Single_Cell_SC_EC_Norm_RMlowQC_Rename.tsv -rows_to_keep="./testInputForHeatmapping/BEM_inputs/genesToKeep.txt" -cluster_rows -xfontsize="2" -title="Thymic Markers in Fetal Thymus, Pediatric Thymus, and Thymic Epithelial Progenitors" -titlefontsize="12" -suppress_row_dend -xlabel="  |---------------Fetal----------------|--Ped---|---------------------------------PSC-TEP------------------------------|   " -ln -vmin="-5" -vmax="5" -cols_to_keep="./testInputForHeatmapping/BEM_inputs/EpcamSamplesGT1.txt"
+--------------  END COMMAND LINE USED  -------------
+
+args:
+out_dir^/Users/rstewart/Desktop/rms_pkgs_top/rms_pkgs/heatmap/exampleHM_output/2023_06_27_11_20_11
+infile^/Users/rstewart/Desktop/rms_pkgs_top/rms_pkgs/heatmap/testInputForHeatmapping/BEM_inputs/Project_Human_Thymus_Single_Cell_SC_EC_Norm_RMlowQC_Rename.tsv
+rows_to_keep_for_heatmap^/Users/rstewart/Desktop/rms_pkgs_top/rms_pkgs/heatmap/testInputForHeatmapping/BEM_inputs/genesToKeep.txt
+cols_to_keep_for_heatmap^/Users/rstewart/Desktop/rms_pkgs_top/rms_pkgs/heatmap/testInputForHeatmapping/BEM_inputs/EpcamSamplesGT1.txt
+colormap^icefire
+cluster_row_data^True
+cluster_column_data^False
+use_raw_values^False
+keep_standarddev_zero^False
+standardize_rows^False
+linkage_method^average
+distance_metric^euclidean
+l_nat^True
+median_ratio_norm^False
+title_for_heatmap^Thymic Markers in Fetal Thymus, Pediatric Thymus, and Thymic Epithelial Progenitors
+title_fontsize^12
+suppress_row_dendrogram^True
+suppress_col_dendrogram^False
+x_fontsize^2
+y_fontsize^None
+min_required^-10000.0
+required_ratio^-10000.0
+height_pad^0
+x_label^  |---------------Fetal----------------|--Ped---|---------------------------------PSC-TEP------------------------------|   
+y_label^None
+v_min^-5
+v_max^5
+start_time_secs^1687882811.0
+pretty_start_time^2023_06_27_11_20_11
+addl_logfile^/Users/rstewart/Desktop/rms_pkgs_top/rms_pkgs/heatmap/exampleHM_output/2023_06_27_11_20_11/addl_log/addl_log_2023_06_27_11_20_11_.txt
+parms_logfile^/Users/rstewart/Desktop/rms_pkgs_top/rms_pkgs/heatmap/exampleHM_output/2023_06_27_11_20_11/parms_log/parms_log_2023_06_27_11_20_11_.txt
+script_logfile^/Users/rstewart/Desktop/rms_pkgs_top/rms_pkgs/heatmap/exampleHM_output/2023_06_27_11_20_11/script_log/script_log_2023_06_27_11_20_11_.txt
+pkgs_logfile^/Users/rstewart/Desktop/rms_pkgs_top/rms_pkgs/heatmap/exampleHM_output/2023_06_27_11_20_11/pkgs_log/pkgs_log_2023_06_27_11_20_11_.txt

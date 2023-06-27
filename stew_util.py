@@ -29,7 +29,11 @@ def create_heatmap(df_to_use,
                    width,
                    title_fontsize,
                    x_fontsize,
-                   y_fontsize):
+                   y_fontsize,
+                   x_label,
+                   y_label,
+                   vmin,
+                   vmax):
 
     # height = 2 + 0.8 * df_to_use.shape[0]
     # print (height, "  df ", df_to_use.shape[0])
@@ -51,8 +55,8 @@ def create_heatmap(df_to_use,
             col_cluster=cluster_columns,
             cmap=colormap,
             standard_scale=stand,
-            vmin=-3,   # -3
-            vmax=3,  # 3
+            vmin=vmin,   # -3
+            vmax=vmax,  # 3
             dendrogram_ratio=(2 / 10, 2 / height),
             figsize=figsize,
             xticklabels=1,
@@ -61,7 +65,8 @@ def create_heatmap(df_to_use,
             method=link
             # cbar_pos=None
         )
-        cm.ax_heatmap.set_ylabel('')
+        cm.ax_heatmap.set_ylabel(y_label)
+        cm.ax_heatmap.set_xlabel(x_label)
         print("title:", title)
         if title is not None:
             print("title is true")

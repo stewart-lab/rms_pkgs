@@ -1,0 +1,285 @@
+
+
+-------------- START heatmap_from_tsv2.py -----------------
+import seaborn as sns
+import pandas as pd
+import numpy as np
+from scipy.stats import zscore
+import cmdlogtime
+import stew_util as su
+import os
+import conorm
+sns.set_theme(color_codes=True)
+COMMAND_LINE_DEF_FILE = "./heatmap_from_tsv2_commandLine.txt"
+
+
+def main():
+    (start_time_secs, pretty_start_time, my_args, addl_logfile) = cmdlogtime.begin(COMMAND_LINE_DEF_FILE)
+    out_pdf = os.path.join(my_args["out_dir"], "heatmap.pdf")
+    out_tsv = os.path.join(my_args["out_dir"], "final_filtered_table.tsv")
+
+    df = read_infile(my_args["infile"])
+
+    df = filter_cols(my_args["cols_to_keep_for_heatmap"], df)
+
+    df = filter_rows_with_all_zeros(df)
+
+    df, rows_to_keep = specify_rows_to_keep(my_args["rows_to_keep_for_heatmap"], df)
+    # need rows_to_keep later, as this will be used to filter the dataframe AFTER further zscore stddev0 filtering
+
+    df_pre_manip = df
+    df = maybe_take_natural_log(my_args["l_nat"], df)
+
+    df = maybe_norm(my_args['median_ratio_norm'], df)
+
+    df = maybe_standardize(my_args["standardize_rows"], my_args["keep_standarddev_zero"], df)
+
+    df, did_z = maybe_compute_zscores(my_args["use_raw_values"], my_args["standardize_rows"], df)
+
+    df, df_pre_manip_filtered = filter_rows(rows_to_keep, df, did_z, df_pre_manip, my_args["min_required"], my_args["required_ratio"])
+
+    # Set height based on number of genes. Set width to 10.  RMS. seems problematic
+    height = (2 + 0.2 * len(rows_to_keep) + my_args["height_pad"])
+    width = 10
+
+    cm = su.create_heatmap(
+        df,
+        out_pdf,
+        my_args["colormap"],
+        my_args["cluster_row_data"],
+        my_args["cluster_column_data"],
+        my_args["keep_standarddev_zero"],
+        my_args["standardize_rows"],
+        my_args["linkage_method"],
+        my_args["distance_metric"],
+        my_args["title_for_heatmap"],
+        my_args["suppress_row_dendrogram"],
+        my_args["suppress_col_dendrogram"],
+        height,
+        width,
+        my_args["title_fontsize"],
+        my_args["x_fontsize"],
+        my_args["y_fontsize"],
+        my_args["x_label"],
+        my_args["y_label"],
+        my_args["v_min"],
+        my_args["v_max"]
+    )
+    try:
+        print(cm.dendrogram_row.reordered_ind)
+        df_pre_manip_filtered = df_pre_manip_filtered.reindex(df_pre_manip_filtered.index[cm.dendrogram_row.reordered_ind])
+    except Exception as ex:
+        print("Probably no dendrogram. ", ex)
+    df_pre_manip_filtered.to_csv(out_tsv, sep="\t")
+    cmdlogtime.end(addl_logfile, start_time_secs)
+
+
+# ----------------------------------- FUNCTIONS  -------------------------------------
+def read_infile(infile):
+    df = pd.read_csv(infile, sep='\t', index_col=0)
+    print('Shape of data before any filtering: ', df.shape)
+    # print(df)
+    return df
+
+
+def filter_cols(cols_to_keep_file, df):
+    if (cols_to_keep_file.endswith("ALLZZZ")):
+        df_cols = pd.DataFrame()
+    else:
+        df_cols = pd.read_csv(cols_to_keep_file, sep='\t', index_col=0, header=None)
+    print('Shape of columns: ', df_cols.shape)
+    # Filter to keep only columns we want to plot
+    if (not df_cols.shape == (0, 0)):
+        df = df[df_cols.index]
+    print('Shape of data after filtering columns: ', df.shape)
+    return df
+
+
+def filter_rows_with_all_zeros(df):
+    at_least_one_non_zero = np.sum(np.array(df), axis=1) != 0
+    df = df.loc[at_least_one_non_zero]
+    print('Shape of data after filtering out all zeros: ', df.shape)
+    return df
+
+
+def specify_rows_to_keep(rows_to_keep, df):
+    if (rows_to_keep.endswith("ALLZZZ")):
+        df_rows = df
+    else:
+        df_rows = pd.read_csv(rows_to_keep, sep='\t', index_col=0, header=None)
+    print('shape of df_rows:', df_rows.shape)
+
+    # rows_to_keep = set()
+    rows_to_keep = []
+    # rows_to_keep = (set(df.index) & set(df_rows.index))
+    rows_to_keep = [x for x in df.index if x in df_rows.index]
+    # print("rtk:", rows_to_keep)
+    return df, rows_to_keep
+
+
+def maybe_take_natural_log(l_nat, df):
+    if l_nat:
+        # take ln(val + 1)
+        df = pd.DataFrame(
+            data=np.log(np.array(df) + 1),
+            index=df.index,
+            columns=df.columns
+        )
+    return df
+
+
+def maybe_norm(norm, df):
+    if norm:
+        df = conorm.mrn(df)
+    return df
+
+
+def maybe_standardize(standardize_rows, keep_standarddev_zero, df):
+    if keep_standarddev_zero:
+        if standardize_rows:
+            std_is_zero = np.std(np.array(df), axis=1) == 0
+            if (std_is_zero.any()):
+                print("Note that keeping the ones with standard deviation of zero and choosing to standardize WILL lead to divide by zero errors for this dataset!!!!")
+            print("Note that keeping the ones with standard deviation of zero and choosing to standardize can lead to divide by zero errors!!!!")
+    else:
+        # Filter to only keep genes with std deviation != 0
+        std_not_zero = np.std(np.array(df), axis=1) != 0
+        df = df.loc[std_not_zero]
+        print('Shape of data after filtering stddev0: ', df.shape)
+    return df
+
+
+def maybe_compute_zscores(use_raw_values, standardize_rows, df):
+    did_z = False
+    if (use_raw_values or standardize_rows):
+        df_to_use = df
+    else:
+        did_z = True
+        # Compute Z-scores row-wise (i.e. for each gene)
+        # X_zscore = df_input.apply(my_zscore, axis=1).to_list()  #rms see note on my_zscore()
+        X_zscore = zscore(np.array(df), axis=1)
+
+        # Note. May need way to do a different non-traditional z-score calculation.
+        # The code below is for the traditional z score calculation
+        df_zscore = pd.DataFrame(
+            data=X_zscore,
+            index=df.index,
+            columns=df.columns
+        )
+        df_to_use = df_zscore.replace(np.nan, 0)
+        # df_to_use = df_zscore  # rms, this is what we would do if we fix the my_zscore() function
+    return df_to_use, did_z
+
+
+def filter_rows(rows_to_keep, df, did_z, df_pre_manip, min_required, required_ratio):
+    # Filter the data for the rows of interest
+    # print("PRE_Z", df_pre_manip)
+    # print("THEDF", df)
+    # print("Rows_to_keep:", rows_to_keep)
+    # rows_to_keep = rows_to_keep & set(df.index)
+    # rows_to_keep = (set(df.index) & set(df_rows.index))
+    rows_to_keep = [x for x in rows_to_keep if x in df.index]
+    # print("length rows to keep after all filtering:", len(rows_to_keep))
+    # print("rows to keep")
+    # print(rows_to_keep)
+    # print ("df at top of filter rows")
+    # print (df)
+    df = df.loc[rows_to_keep]
+    df_pre_manip = df_pre_manip.loc[rows_to_keep]
+    if did_z:
+        min_dfpre_series = df_pre_manip.min()
+        # print("mindfseries:", min_dfpre_series)
+        min_dfpre = min_dfpre_series.min()
+        # print("mindfpre: ", min_dfpre)
+        rows_to_keep2 = set()
+        rows_to_keep2 = []
+        for row in df_pre_manip.iterrows():
+            min_val = min(row[1])
+            max_val = max(row[1])
+            # print ("min: ",  min_val,  " max: ", max_val)
+            if (min_dfpre < 0):  # probably logged Info
+                max_min_ratio = max_val - min_val
+            else:  # probably tpms or something like that
+                # add 1 to max and min to prevent divide by zero errors
+                max_min_ratio = (max_val + 1) / (min_val + 1)
+            if max_min_ratio >= required_ratio:
+                for val in row[1]:
+                    if val >= min_required:
+                        rows_to_keep2.append(row[0])
+                        break
+            # coeff_of_var = variation(row[1])
+            # print ("row:", row[0], row[1], " cv:", coeff_of_var)
+        print(rows_to_keep2)
+        df = df.loc[rows_to_keep2]
+        df_pre_manip = df_pre_manip.loc[rows_to_keep2]
+    print('Shape of df after filtering rows: ', df.shape)
+    print(df)
+    # print(df_pre_manip)
+    return df, df_pre_manip
+
+# def my_zscore(row):
+# RMS NOTE:  keeping this here as an example of apply.
+# RMS NOTE:  This won't work in that we will never hit the exception, as zscore returns nan
+#            if stddev is zero.  So, we'd have to do something fancy in the function to
+#            replace the Nans with zeros.
+#            so doing it with relpace(np.nan, 0) as above in the create_heatmap function is
+#            what we will do for now.
+#    try:
+#        return zscore(np.array(row))
+#    except ZeroDivisionError:
+#        return np.zeros(row.shape)
+#
+
+
+if __name__ == "__main__":
+    main()
+
+
+-------------- END heatmap_from_tsv2.py -----------------
+
+
+-------------- START ./heatmap_from_tsv2_commandLine.txt -----------------
+# first line is the description of what the program does.
+# subsequent lines list positional arguments (PA), then key-value (KV)arguments (KVA).
+# Positional line:
+# PA_name|PA_Description|Is_out_dir|Is_Dir|Check_Directory|Is_file|Check_File|||
+# Key/Value Line:
+# KVA_name|KVA_Description|Is_out_dir|Is_Dir|Check_Directory|Is_file|Check_File|alternate_KVA_name|default value|type
+# -print_x_thresh|print every X threshold|0|0|0|0|0|--print_every_x_threshold|1|int
+# For KVAs for booleans, set default value to BOOLEANFALSE or BOOLEANTRUE.
+# If default is BOOLEANFALSE, then if you set the flag it will be True. (or vice-versa)
+# -get_top_words|get top most probable words|0|0|0|0|0|--get_top_probable_words|BOOLEANFALSE|
+#
+# 
+# Example below
+Make heatmap from infile.
+out_dir|Top level directory that holds all the results|1|1|1|0|0|||
+infile|file path of file with info to be heatmapped|0|0|0|1|1|||
+-rows_to_keep|list of rows to keep|0|0|0|1|1|--rows_to_keep_for_heatmap|ALLZZZ|
+-cols_to_keep|list of samples to keep|0|0|0|1|1|--cols_to_keep_for_heatmap|ALLZZZ|
+-colors|color map to use, eg, bwr, viridis, mako, vlag, icefire etc. see https://seaborn.pydata.org/tutorial/color_palettes.html|0|0|0|0|0|--colormap|icefire|
+-cluster_rows|cluster row data|0|0|0|0|0|--cluster_row_data|BOOLEANFALSE|
+-cluster_cols|cluster row data|0|0|0|0|0|--cluster_column_data|BOOLEANFALSE|
+-use_raw|use_raw_values|0|0|0|0|0|--use_raw_values|BOOLEANFALSE|
+-keep_sd0|keep rows with standard deviation of zero|0|0|0|0|0|--keep_standarddev_zero|BOOLEANFALSE|
+-stand|standardize rows (subtract min divide by max)|0|0|0|0|0|--standardize_rows|BOOLEANFALSE|
+-link|linkage method (average, complete, single, weighted, centroid, median, ward)|0|0|0|0|0|--linkage_method|average|
+-dist|distance metric. See: https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.pdist.html#scipy.spatial.distance.pdist|0|0|0|0|0|--distance_metric|euclidean|
+-ln|take natural log  + 1 of the data|0|0|0|0|0|--l_nat|BOOLEANFALSE|
+-norm|median by ratio normalize the data|0|0|0|0|0|--median_ratio_norm|BOOLEANFALSE|
+-title|title for heatmap|0|0|0|0|0|--title_for_heatmap||
+-titlefontsize|font size title for heatmap|0|0|0|0|0|--title_fontsize|40|int
+-suppress_row_dend|suppress row dendrogram|0|0|0|0|0|--suppress_row_dendrogram|BOOLEANFALSE|
+-suppress_col_dend|suppress col dendrogram|0|0|0|0|0|--suppress_col_dendrogram|BOOLEANFALSE|
+-xfontsize|font size of x labels|0|0|0|0|0|--x_fontsize||
+-yfontsize|font size of y labels|0|0|0|0|0|--y_fontsize||
+-min_req|minumum required measure to keep the row|0|0|0|0|0|--min_required|-10000|float
+-req_ratio|minumum ratio of max to min required to keep the row (for logged data this is max - min)|0|0|0|0|0|--required_ratio|-10000|float
+-heightpad|extra height to add to heatmap|0|0|0|0|0|--height_pad|0|int
+-xlabel|x label for heatmap|0|0|0|0|0|--x_label||
+-ylabel|y label for heatmap|0|0|0|0|0|--y_label||
+-vmin|minimum for color scheme|0|0|0|0|0|--v_min|-3|int
+-vmax|maximum for color scheme|0|0|0|0|0|--v_max|3|int
+
+
+-------------- END ./heatmap_from_tsv2_commandLine.txt -----------------
