@@ -1,0 +1,157 @@
+    1  ls
+    2  ls -a
+    3  echo $PATH
+    4  ls /isitools/
+    5  ls -a /isitools/
+    6  more /isitools/.bash_profile
+    7  echo source /isitools/.bash_profile >> .bash_profile
+    8  source .bash_profile 
+    9  quota
+   10  df
+   11  df -h
+   12  htop
+   13  ls /isiseqruns/
+   14  git clone git@github.com:stewart-lab/Novogene_Jue.git
+   15  ls
+   16  ls /isitools/Python3.7.2/bin
+   17  ssh-keygen -t ed25519 -C bmjohns43@gmail.com
+   18  eval "$(ssh-agent -s)"
+   19  ls ~/
+   20  touch ~/.ssh/config
+   21  ls
+   22  ls ~/.ssh/
+   23  less ~/.ssh/id_ed25519.pub
+   24  nano ~/.ssh/config
+   25  chmod 600 .ssh/config
+   26  ssh-add ~/.ssh/id_ed25519
+   27  ls -lt ~/.ssh/id_ed25519
+   28  chmod 600 .ssh/id_ed25519
+   29  ls -lt ~/.ssh/id_ed25519
+   30  ssh-add ~/.ssh/id_ed25519
+   31  cat ~/.ssh/id_ed25519.pub
+   32  ssh -T git@github.com
+   33  git clone git@github.com:stewart-lab/rms_pkgs.git
+   34  ls
+   35  python
+   36  R
+   37  pip install cmdlogtime
+   38  R
+   39  ls
+   40  pwd
+   41  mkdir -p miniconda3
+   42  wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda3/miniconda.sh
+   43  ls
+   44  bash miniconda3/miniconda.sh -b -u -p miniconda3
+   45  ls
+   46  ls miniconda3/
+   47  rm -rf miniconda3/miniconda.sh
+   48  miniconda3/bin/conda init bash
+   49  less .bashrc
+   50  ls
+   51  mkdir conda_envs
+   52  ls
+   53  pwd
+   54  conda create --prefix /w5home/bmoore/conda_envs -c conda-forge -c anaconda -c r r-essentials r-base fonts-anaconda r-cairo
+   55  ls miniconda3/
+   56  ls miniconda3/bin
+   57  ls miniconda3/
+   58  ls miniconda3/envs
+   59  less .bashrc
+   60  miniconda3/bin/conda create --prefix /w5home/bmoore/conda_envs -c conda-forge -c anaconda -c r r-essentials r-base fonts-anaconda r-cairo
+   61  ls
+   62  ls conda_envs/
+   63  conda activate conda_envs
+   64  miniconda3/bin/conda activate conda_envs
+   65  miniconda3/bin/conda init bash
+   66  miniconda3/bin/conda activate conda_envs
+   67  ls
+   68  conda
+   69  conda list
+   70  miniconda3/bin/conda list
+   71  ls
+   72  miniconda3/bin/conda activate conda_envs
+   73  conda init --help
+   74  miniconda3/bin/conda init --help
+   75  miniconda3/bin/conda init bash
+   76  ls
+   77  rmdir conda_envs/
+   78  rmdir -R conda_envs/
+   79  rmdir --help
+   80  rm -R conda_envs/
+   81  ls
+   82  mkdir conda_envs
+   83  miniconda3/bin/conda create --prefix /w5home/bmoore/conda_envs/DEseq -c conda-forge -c anaconda -c r r-essentials r-base fonts-anaconda r-cairo
+   84  ls
+   85  ls miniconda3/
+   86* 
+   87  miniconda3/bin/conda activate /w5home/bmoore/conda_envs/DEseq
+   88  less .bashrc
+   89  source activate /w5home/bmoore/conda_envs/DEseq
+   90  ls miniconda3/bin/
+   91  eval "$(conda shell.bash hook)"
+   92  eval "$(miniconda3/bin/conda shell.bash hook)"
+   93  miniconda3/bin/conda activate /w5home/bmoore/conda_envs/DEseq
+   94  miniconda3/bin/conda init
+   95  which conda
+   96  conda 
+   97  conda init bash
+   98  conda activate conda_envs/DEseq
+   99  ls
+  100  cd rms_pkgs/
+  101  ls
+  102  cd DESeq2_PythonAndR/
+  103  ls
+  104  python
+  105  python3 runDeseq2.py ./example_inputs_outputs_and_command_line/Deseq2_out_example  example_inputs_outputs_and_command_line/genes.ec_just0657_p2AECandSidePop.txt ./example_inputs_outputs_and_command_line/metadataForAECvsSidePop.tsv CType CType AEC SidePop -f CType:CType
+  106  conda install -n DEseq cmdlogtime
+  107  pip install cmdlogtime
+  108  R
+  109  ls
+  110  conda deactivate
+  111  ls
+  112  cd ../../
+  113  ls
+  114  ls conda_envs/
+  115  mv conda_envs/DEseq/ miniconda3/envs/
+  116  ls miniconda3/envs/
+  117  conda activate DEseq
+  118  conda list -n DEseq --show-channel-urls
+  119  conda install -n DEseq r-BiocManager
+  120  conda install -n DEseq -c r DESeq2
+  121  conda install -n DEseq -c r BiocManager
+  122  conda install -n DEseq -c conda-forge r-biocmanager
+  123  conda install -n DEseq -c bioconda bioconductor-deseq2
+  124  conda install -n DEseq -c bioconda bioconductor-EnhancedVolcano
+  125  conda install -n DEseq -c conda-forge optparse
+  126  ls
+  127  cd rms_pkgs/
+  128  ls
+  129  cd DESeq2_PythonAndR/
+  130  ls
+  131  python3 runDeseq2.py ./example_inputs_outputs_and_command_line/Deseq2_out_example  example_inputs_outputs_and_command_line/genes.ec_just0657_p2AECandSidePop.txt ./example_inputs_outputs_and_command_line/metadataForAECvsSidePop.tsv CType CType AEC SidePop -f CType:CType
+  132  ls
+  133  ls example_inputs_outputs_and_command_line
+  134  python3 runDeseq2.py example_inputs_outputs_and_command_line/Deseq2_out_example example_inputs_outputs_and_command_line/genes.ec_just0657_p2AECandSidePop.txt example_inputs_outputs_and_command_line/metadataForAECvsSidePop.tsv CType CType AEC SidePop -f CType:CType
+  135  Rscript Deseq2_mir.R
+  136  R Deseq2_mir.R
+  137  R DESeq2_RScript.R
+  138  conda install -c r optparse
+  139  R
+  140  less /w5home/bmoore/miniconda3/envs/DEseq/bin/R
+  141  conda list -n DEseq --show-channel-urls
+  142  conda create --prefix /w5home/bmoore/miniconda3/envs/DEseq2 -c conda-forge -c anaconda -c r r-essentials r-base fonts-anaconda r-cairo
+  143  conda deactivate
+  144  conda create --prefix /w5home/bmoore/miniconda3/envs/DEseq2 -c conda-forge -c anaconda -c r r-essentials r-base fonts-anaconda r-cairo
+  145  conda activate /w5home/bmoore/miniconda3/envs/DEseq2
+  146  conda install -n DEseq -c conda-forge r-biocmanager
+  147  conda install -n DEseq2 -c conda-forge r-biocmanager
+  148  conda install -n DEseq2 -c bioconda bioconductor-deseq2
+  149  conda install -n DEseq -c bioconda bioconductor-EnhancedVolcano
+  150  conda install -n DEseq2 -c bioconda bioconductor-EnhancedVolcano
+  151  pip install cmdlogtime
+  152  conda install -c r optparse
+  153  R
+  154  ls
+  155  python3 runDeseq2.py example_inputs_outputs_and_command_line/Deseq2_out_example example_inputs_outputs_and_command_line/genes.ec_just0657_p2AECandSidePop.txt example_inputs_outputs_and_command_line/metadataForAECvsSidePop.tsv CType CType AEC SidePop -f CType:CType
+  156  conda install -n DEseq2 -c bioconda bioconductor-biocgenerics
+  157  history > hist.txt
